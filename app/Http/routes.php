@@ -26,7 +26,7 @@ Route::controllers([
 ]);
 Route::auth();
 
-Route::get('buses/getLogout', 'APIController@getLogout');
+
 Route::get('/home', 'APIController@index');
 Route::get('auth/logout', 'Auth\AuthController@logout');
 Route::get('/','Auth\AuthController@logout');

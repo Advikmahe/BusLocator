@@ -65,10 +65,5 @@ class APIController extends Controller
 	   //$request->session()->flash('alert-success', 'Bus was successful added!'); 	 
 	   return redirect()->back()->with('status', 'Bus Registered Successfully!');
 	}
-	public function getLogout()
-	{
-	auth()->logout();
-
-    return redirect()->route('index');
-	}
+	
 }
