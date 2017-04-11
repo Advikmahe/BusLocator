@@ -9,7 +9,26 @@
    <div class="container">
     <div class="panel panel-default">
       <div class="panel-heading">Register a bus<span style="padding-left:50px;"><a href="{{url('/logout')}}" class="btn btn-success">Logout</a></span></div>
-	  
+	  <div class="collapse navbar-collapse" id="app-navbar-collapse">
+                
+
+                <!-- Right Side Of Navbar -->
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- Authentication Links -->
+                    @if (Auth::guest())
+                        <li><a href="{{ url('/login') }}">Login</a></li>
+                        <li><a href="{{ url('/register') }}">Register</a></li>
+                    @else
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                {{ Auth::user()->name }} <span class="caret"></span>
+                            </a>
+
+                            
+                        </li>
+                    @endif
+                </ul>
+            </div>
     {!! Form::open(['url' => 'buses']) !!}
 	 @if(Session::has('errors'))
             <div class="alert alert-warning">
