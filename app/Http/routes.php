@@ -12,13 +12,11 @@
 */
 
 
-Route::get('/buses','APIController@index');
-Route::get('api/get-userlocation','APIController@index');
-Route::get('api/get-busstop-list','APIController@getBusStop');
-Route::get('api/get-bus-list','APIController@getBusList');
-Route::resource('buses','APIController');
-
-
+Route::post('/store','UserprofileController@store');
+Route::post('/update','UserprofileController@update');
+Route::get('/profilelist','UserprofileController@index');
+Route::resource('Userprofile','UserprofileController');
+Route::get('/adduserprofile','UserprofileController@create');
 
 Route::controllers([
    'auth' => 'Auth\AuthController',
@@ -26,7 +24,13 @@ Route::controllers([
 ]);
 Route::auth();
 
-
-Route::get('/home', 'APIController@index');
 Route::get('auth/logout', 'Auth\AuthController@logout');
 Route::get('/','Auth\AuthController@logout');
+
+
+Route::group(array('prefix' => 'api/v1'), function()
+    {	
+	Route::resource('Userprofileapi', 'APIController', ['only' => [
+		'index','show'
+	]]);
+  });

@@ -3,67 +3,71 @@ namespace App\Http\Controllers;
 
 use DB;
 use Illuminate\Http\Request;
-use App\Buses;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Redirect;
-
+use Illuminate\Support\Facades\Validator;
+use App\Usersprofile;
+use Illuminate\Support\Facades\View;
+use Response;
 
 class APIController extends Controller
 {
-	/* Select user location*/
+	/* Select list of user profile*/
     public function index()
     {
-        $userlocation = DB::table("userlocation")->lists("name","id");
-        return view('buses.index',compact('userlocation'));
-    }
-	/* Retrieve list of busstop based on userlocation_id*/
-    public function getBusStop(Request $request)
-    {
-        $busstop = DB::table("busstop")
-                    ->where("userlocation_id",$request->userlocation_id)
-                    ->lists("name","id");
-        return response()->json($busstop);
-    }
-	/* Retrieve list of buses based on busstop_id*/
-    public function getBusList(Request $request)
-    {
-        $buses = DB::table("buses")
-                    ->where("busstop_id",$request->busstop_id)
-                    ->lists("name","id");
-        return response()->json($buses);
-    }
-	/* Form to Register a bus */
-	public function create()
-	{
-	   $busstop = DB::table("busstop")                    
-                   ->lists("name","id");
-	   return view('buses.create',compact('busstop'));
-	}
-	/* Add Bus to Busstop*/
-	public function store(Request $request)
-	{
-		
-		$input = Input::only('Busno', 'busstop');
-         $validator = Validator::make($input,
-             array(
-                 'Busno' => 'required',
-                 'busstop' => 'required',
-             )
-         );
+        try{
 
-         if ($validator->fails())
-         {
-             return  redirect()->back()->with('errors', $validator->messages());
-         } else {	
-			 $name=$request->get('Busno');
-		     $busstop_id=$request->get('busstop');		
-		     DB::table('buses')->insert(
-			 ['name' => $name, 'busstop_id' => $busstop_id]
-			 );
-		 }
-	   //$request->session()->flash('alert-success', 'Bus was successful added!'); 	 
-	   return redirect()->back()->with('status', 'Bus Registered Successfully!');
+            $response = [
+                'users' => []
+            ];
+            $statusCode = 200;
+            $users = Usersprofile::all();
+
+            foreach($users as $user){
+
+                $response['users'][] = [
+                    'id' => $user->id,
+                    'username' => $user->name,
+                    'email' => $user->email,
+                    'image' => $user->profilepic,
+					'phone' => $user->phone
+                ];
+
+
+            }
+
+
+        }catch (Exception $e){
+            $statusCode = 404;
+        }finally{
+            return Response::json($response, $statusCode);
+        }
+    }
+	/* Select user profile*/
+	public function show($id)
+	{
+	    try{
+
+            $response = [
+                'user' => []
+            ];
+            $statusCode = 200;
+            
+            $user = Usersprofile::find($id);
+    
+            $response = [
+					'id' => $user->id,
+                    'username' => $user->name,
+                    'email' => $user->email,
+                    'image' => $user->profilepic,
+					'phone' => $user->phone
+            ];
+            
+        }catch (Exception $e){
+            $statusCode = 404;
+        }finally{
+            return Response::json($response, $statusCode);
+        }
+
 	}
 	
 }

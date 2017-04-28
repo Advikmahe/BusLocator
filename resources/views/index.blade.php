@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>locate Bus stop</title>  
+    <title>Admin Login</title>  
 	<link rel="stylesheet" href="{{ URL::asset('css/bootstrap.css') }}">
 	<script type="text/javascript" src="{{ URL::asset('js/jquery.js') }}"></script>
 	<!-- Fonts -->

@@ -40,7 +40,7 @@
 
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/') }}">
-                  Locate Bus Stop
+                  Admin Login
                 </a>
             </div>
 
